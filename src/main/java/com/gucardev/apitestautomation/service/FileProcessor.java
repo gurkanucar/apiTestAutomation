@@ -2,18 +2,21 @@ package com.gucardev.apitestautomation.service;
 
 import com.gucardev.apitestautomation.model.TestScenario;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class FileProcessor {
 
   private final ExcelFileReader reader;
+  private final ExecutorService executorService;
 
   public FileProcessor() {
     this.reader = new ExcelFileReader();
+    this.executorService = Executors.newCachedThreadPool();
   }
 
   public List<TestScenario> processFile(String filePath) {
@@ -23,29 +26,23 @@ public class FileProcessor {
     return testScenarios;
   }
 
-  public void processScenariosInBackground(
+  public void processScenariosIndependently(
       List<TestScenario> scenarios, Consumer<TestScenario> updateUI) {
-    Task<Void> task =
-        new Task<>() {
-          @Override
-          protected Void call() throws Exception {
-            for (TestScenario scenario : scenarios) {
-              // Simulate a long-running task
-              Thread.sleep(1000);
-
-              // Process scenario and update its status
-              boolean result =
-                  processScenario(scenario); // Implement this method based on your logic
+    for (TestScenario scenario : scenarios) {
+      executorService.submit(
+          () -> {
+            try {
+              // Process scenario
+              boolean result = processScenario(scenario); // Implement this based on your logic
               scenario.setCompleted(result);
 
-              // Update the UI
+              // Update UI
               Platform.runLater(() -> updateUI.accept(scenario));
+            } catch (Exception e) {
+              e.printStackTrace(); // Handle exception as needed
             }
-            return null;
-          }
-        };
-
-    new Thread(task).start();
+          });
+    }
   }
 
   private boolean processScenario(TestScenario scenario) {

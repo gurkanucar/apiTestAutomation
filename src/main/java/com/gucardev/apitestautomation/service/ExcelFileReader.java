@@ -15,11 +15,12 @@ public class ExcelFileReader {
   private static final String SCENARIO_DESCRIPTION_COLUMN = "scenarioDescription";
   private static final String EXPECTED_RESPONSE_COLUMN = "expectedResponse";
   private static final String REQUEST_COLUMN = "request";
+  private static final String URL = "url";
 
   public List<TestScenario> readExcelFile(String filePath) {
     List<TestScenario> testScenarios = new ArrayList<>();
 
-    try (Workbook workbook = new XSSFWorkbook(new FileInputStream(new File(filePath)))) {
+    try (Workbook workbook = new XSSFWorkbook(new FileInputStream(filePath))) {
       Sheet sheet = workbook.getSheetAt(0);
       Row headerRow = sheet.getRow(0);
 

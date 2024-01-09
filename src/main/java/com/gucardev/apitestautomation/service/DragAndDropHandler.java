@@ -3,11 +3,10 @@ package com.gucardev.apitestautomation.service;
 import com.gucardev.apitestautomation.DialogUtil;
 import com.gucardev.apitestautomation.HelloController;
 import com.gucardev.apitestautomation.model.TestScenario;
+import java.util.List;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
-
-import java.util.List;
 
 public class DragAndDropHandler {
 
@@ -39,11 +38,14 @@ public class DragAndDropHandler {
       var db = event.getDragboard();
       boolean success = db.hasFiles();
       if (success) {
-        db.getFiles().forEach(file -> {
-          List<TestScenario> scenarios = fileProcessor.processFile(file.getAbsolutePath());
-          controller.addTestScenarios(scenarios);
-          fileProcessor.processScenariosInBackground(scenarios, controller::updateTestScenario);
-        });
+        db.getFiles()
+            .forEach(
+                file -> {
+                  List<TestScenario> scenarios = fileProcessor.processFile(file.getAbsolutePath());
+                  controller.addTestScenarios(scenarios);
+                  fileProcessor.processScenariosIndependently(
+                      scenarios, controller::updateTestScenario);
+                });
       }
       event.setDropCompleted(success);
       event.consume();
