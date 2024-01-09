@@ -7,9 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import javafx.application.Platform;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class FileProcessor {
 
   private final ExcelFileReader reader;
@@ -23,9 +21,9 @@ public class FileProcessor {
   }
 
   public List<TestScenario> processFile(String filePath) {
-    log.info("Processing file: " + filePath);
+    //    log.info("Processing file: " + filePath);
     List<TestScenario> testScenarios = reader.readExcelFile(filePath);
-    testScenarios.forEach(scenario -> log.info(scenario.toString()));
+    //    testScenarios.forEach(scenario -> log.info(scenario.toString()));
     return testScenarios;
   }
 
