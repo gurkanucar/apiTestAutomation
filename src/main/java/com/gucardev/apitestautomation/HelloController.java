@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
@@ -51,13 +52,12 @@ public class HelloController {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Save CSV File");
     fileChooser.setInitialFileName(
-        "test_scenarios-%s.csv"
-            .formatted(LocalDateTime.now().toString().split("\\.")[0])
+        String.format("test_scenarios-%s.csv", LocalDateTime.now().toString().split("\\.")[0])
             .replace(":", "-"));
     fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
     File file = fileChooser.showSaveDialog(mainVBox.getScene().getWindow());
     if (file != null) {
-      saveToFile(scenarios, file);
+      saveToFile(scenarios.stream().filter(x -> !x.isSuccess()).collect(Collectors.toList()), file);
     }
   }
 
