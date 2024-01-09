@@ -1,18 +1,24 @@
 package com.gucardev.apitestautomation.service;
 
 import com.gucardev.apitestautomation.DialogUtil;
+import com.gucardev.apitestautomation.HelloController;
+import com.gucardev.apitestautomation.model.TestScenario;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
+
+import java.util.List;
 
 public class DragAndDropHandler {
 
   private final VBox dropZone;
   private final FileProcessor fileProcessor;
+  private final HelloController controller;
 
-  public DragAndDropHandler(VBox dropZone) {
+  public DragAndDropHandler(VBox dropZone, HelloController controller) {
     this.dropZone = dropZone;
     this.fileProcessor = new FileProcessor();
+    this.controller = controller;
     setupDragAndDrop();
   }
 
@@ -33,7 +39,10 @@ public class DragAndDropHandler {
       var db = event.getDragboard();
       boolean success = db.hasFiles();
       if (success) {
-        db.getFiles().forEach(file -> fileProcessor.processFile(file.getAbsolutePath()));
+        db.getFiles().forEach(file -> {
+          List<TestScenario> scenarios = fileProcessor.processFile(file.getAbsolutePath());
+          controller.addTestScenarios(scenarios);
+        });
       }
       event.setDropCompleted(success);
       event.consume();

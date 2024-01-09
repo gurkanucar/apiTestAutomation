@@ -11,10 +11,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelFileReader {
 
-  private static final String SCENARIO_NAME_COLUMN = "Scenario Name";
-  private static final String SCENARIO_DESCRIPTION_COLUMN = "Scenario Description";
-  private static final String EXPECTED_RESPONSE_COLUMN = "Expected Response";
-  private static final String REQUEST_COLUMN = "Request";
+  private static final String SCENARIO_NAME_COLUMN = "scenarioName";
+  private static final String SCENARIO_DESCRIPTION_COLUMN = "scenarioDescription";
+  private static final String EXPECTED_RESPONSE_COLUMN = "expectedResponse";
+  private static final String REQUEST_COLUMN = "request";
 
   public List<TestScenario> readExcelFile(String filePath) {
     List<TestScenario> testScenarios = new ArrayList<>();
