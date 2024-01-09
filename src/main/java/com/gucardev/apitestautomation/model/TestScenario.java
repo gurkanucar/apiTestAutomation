@@ -17,5 +17,6 @@ public class TestScenario {
   private String method;
   private String incomingResponse;
   private String incomingStatus;
+  private boolean success;
   private boolean completed;
 }

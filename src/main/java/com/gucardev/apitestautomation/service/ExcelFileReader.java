@@ -61,7 +61,9 @@ public class ExcelFileReader {
                 method,
                 "response",
                 "status",
-                false);
+                false, // success = false
+                false  // completed = false
+            );
         testScenarios.add(testScenario);
       }
     } catch (IOException e) {
