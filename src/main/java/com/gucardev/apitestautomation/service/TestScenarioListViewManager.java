@@ -72,7 +72,7 @@ public class TestScenarioListViewManager {
 
   private void showDetailsDialog(TestScenario scenario) {
     Alert alert =
-        new Alert(scenario.isCompleted() ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+        new Alert(scenario.isSuccess() ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
     alert.setTitle("Test Scenario Details");
     alert.setHeaderText(null);
 
