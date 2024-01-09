@@ -51,4 +51,15 @@ public class HelloController {
   public void addTestScenarios(List<TestScenario> scenarios) {
     testScenarioListView.getItems().addAll(scenarios);
   }
+
+  public void updateTestScenario(TestScenario updatedScenario) {
+    for (int i = 0; i < testScenarioListView.getItems().size(); i++) {
+      TestScenario scenario = testScenarioListView.getItems().get(i);
+      if (scenario.getId() == updatedScenario.getId()) {
+        testScenarioListView.getItems().set(i, updatedScenario);
+        break;
+      }
+    }
+  }
+
 }

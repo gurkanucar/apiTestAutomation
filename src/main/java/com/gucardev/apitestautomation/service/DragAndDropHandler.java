@@ -42,6 +42,7 @@ public class DragAndDropHandler {
         db.getFiles().forEach(file -> {
           List<TestScenario> scenarios = fileProcessor.processFile(file.getAbsolutePath());
           controller.addTestScenarios(scenarios);
+          fileProcessor.processScenariosInBackground(scenarios, controller::updateTestScenario);
         });
       }
       event.setDropCompleted(success);
