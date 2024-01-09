@@ -3,11 +3,15 @@ package com.gucardev.apitestautomation;
 import com.gucardev.apitestautomation.model.TestScenario;
 import com.gucardev.apitestautomation.service.DragAndDropHandler;
 import com.gucardev.apitestautomation.service.TestScenarioListViewManager;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.List;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -35,5 +39,48 @@ public class HelloController {
   @FXML
   public void clearAllProcessed() {
     testScenarioListView.getItems().clear();
+  }
+
+  @FXML
+  public void exportToCSV() {
+    List<TestScenario> scenarios = testScenarioListView.getItems();
+    if (scenarios.stream().anyMatch(x -> !x.isCompleted())) {
+      DialogUtil.showErrorDialog("Still under the testing!");
+      return;
+    }
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Save CSV File");
+    fileChooser.setInitialFileName(
+        "test_scenarios-%s.csv"
+            .formatted(LocalDateTime.now().toString().split("\\.")[0])
+            .replace(":", "-"));
+    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+    File file = fileChooser.showSaveDialog(mainVBox.getScene().getWindow());
+    if (file != null) {
+      saveToFile(scenarios, file);
+    }
+  }
+
+  private void saveToFile(List<TestScenario> scenarios, File file) {
+    try (PrintWriter writer = new PrintWriter(file)) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("name,desc,method,url,request,expectedResp,incomingResp,incomingStatus");
+      sb.append('\n');
+
+      for (TestScenario scenario : scenarios) {
+        sb.append(scenario.getScenarioName()).append(',');
+        sb.append(scenario.getScenarioDescription()).append(',');
+        sb.append(scenario.getMethod()).append(',');
+        sb.append(scenario.getUrl()).append(',');
+        sb.append(scenario.getRequest()).append(',');
+        sb.append(scenario.getExpectedResponse()).append(',');
+        sb.append(scenario.getIncomingResponse()).append(',');
+        sb.append(scenario.getIncomingStatus()).append("\n\n\n\n");
+      }
+
+      writer.write(sb.toString());
+    } catch (FileNotFoundException e) {
+      DialogUtil.showErrorDialogAsync("Error saving file: " + e.getMessage());
+    }
   }
 }
