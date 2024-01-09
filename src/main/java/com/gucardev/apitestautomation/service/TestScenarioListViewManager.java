@@ -3,11 +3,13 @@ package com.gucardev.apitestautomation.service;
 import com.gucardev.apitestautomation.model.TestScenario;
 import java.util.List;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -58,7 +60,8 @@ public class TestScenarioListViewManager {
   }
 
   private void showDetailsDialog(TestScenario scenario) {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    Alert alert =
+        new Alert(scenario.isCompleted() ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
     alert.setTitle("Test Scenario Details");
     alert.setHeaderText(null);
 
@@ -79,11 +82,10 @@ public class TestScenarioListViewManager {
     descriptionValue.setWrapText(true);
 
     // Text Areas for Request, Response, and Incoming Response
-    TextArea requestArea = createTextArea("Request: ", scenario.getRequest());
-    TextArea responseArea = createTextArea("Expected Response: ", scenario.getExpectedResponse());
-    TextArea incomingResponseArea =
-        createTextArea(
-            "Incoming Response: ", scenario.getIncomingResponse()); // Assuming you have this field
+    Node requestArea = createTextArea("Request: ", scenario.getRequest());
+    Node responseArea = createTextArea("Expected Response: ", scenario.getExpectedResponse());
+    Node incomingResponseArea =
+        createTextArea("Incoming Response: ", scenario.getIncomingResponse());
 
     // Adding to grid
     grid.add(nameLabel, 0, 0);
@@ -97,12 +99,14 @@ public class TestScenarioListViewManager {
     alert.showAndWait();
   }
 
-  private TextArea createTextArea(String label, String content) {
+  private Node createTextArea(String label, String content) {
+    Label textLabel = new Label(label);
+    textLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
     TextArea textArea = new TextArea(content);
     textArea.setEditable(false);
     textArea.setWrapText(true);
-    textArea.setPrefSize(200, 100); // Adjust size as needed
-    return textArea;
+    textArea.setPrefSize(500, 250);
+    return new VBox(textLabel, textArea);
   }
 
   public void addTestScenarios(List<TestScenario> scenarios) {
