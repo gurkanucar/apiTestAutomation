@@ -1,6 +1,7 @@
 package com.gucardev.apitestautomation.service;
 
 import com.gucardev.apitestautomation.model.TestScenario;
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,8 +14,10 @@ public class FileProcessor {
 
   private final ExcelFileReader reader;
   private final ExecutorService executorService;
+  private final RequestSenderUtil requestSenderUtil;
 
-  public FileProcessor() {
+  public FileProcessor(RequestSenderUtil requestSenderUtil) {
+    this.requestSenderUtil = requestSenderUtil;
     this.reader = new ExcelFileReader();
     this.executorService = Executors.newCachedThreadPool();
   }
@@ -46,8 +49,15 @@ public class FileProcessor {
   }
 
   private boolean processScenario(TestScenario scenario) {
-    // Add your scenario processing logic here
-    // Return true or false based on the processing result
-    return Math.random() > 0.5; // Placeholder return value
+    try {
+      HttpResponse<String> response = requestSenderUtil.sendRequest(scenario);
+      scenario.setIncomingResponse(response.body());
+      scenario.setIncomingStatus(String.valueOf(response.statusCode()));
+      return scenario.isCompleted();
+    } catch (Exception e) {
+      e.printStackTrace();
+      scenario.setIncomingResponse(e.getMessage());
+      return false;
+    }
   }
 }

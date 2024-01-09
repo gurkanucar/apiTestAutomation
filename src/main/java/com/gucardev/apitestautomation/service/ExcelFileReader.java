@@ -15,6 +15,7 @@ public class ExcelFileReader {
   private static final String EXPECTED_RESPONSE_COLUMN = "expectedResponse";
   private static final String REQUEST_COLUMN = "request";
   private static final String URL = "url";
+  private static final String METHOD = "method";
 
   public List<TestScenario> readExcelFile(String filePath) {
     List<TestScenario> testScenarios = new ArrayList<>();
@@ -27,11 +28,15 @@ public class ExcelFileReader {
       int scenarioDescriptionColIdx = findColumnIndex(headerRow, SCENARIO_DESCRIPTION_COLUMN);
       int expectedResponseColIdx = findColumnIndex(headerRow, EXPECTED_RESPONSE_COLUMN);
       int requestColIdx = findColumnIndex(headerRow, REQUEST_COLUMN);
+      int urlColIdx = findColumnIndex(headerRow, URL);
+      int methodColIdx = findColumnIndex(headerRow, METHOD);
 
       if (scenarioNameColIdx == -1
           || scenarioDescriptionColIdx == -1
           || expectedResponseColIdx == -1
-          || requestColIdx == -1) {
+          || requestColIdx == -1
+          || urlColIdx == -1
+          || methodColIdx == -1) {
         throw new IllegalArgumentException("Required columns not found in the sheet");
       }
 
@@ -42,6 +47,8 @@ public class ExcelFileReader {
         String scenarioDescription = getCellValue(row, scenarioDescriptionColIdx);
         String expectedResponse = getCellValue(row, expectedResponseColIdx);
         String request = getCellValue(row, requestColIdx);
+        String url = getCellValue(row, urlColIdx);
+        String method = getCellValue(row, methodColIdx);
 
         TestScenario testScenario =
             new TestScenario(
@@ -50,7 +57,10 @@ public class ExcelFileReader {
                 scenarioDescription,
                 request,
                 expectedResponse,
-                "",
+                url,
+                method,
+                "response",
+                "status",
                 false);
         testScenarios.add(testScenario);
       }

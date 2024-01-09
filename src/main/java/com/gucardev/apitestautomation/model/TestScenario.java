@@ -13,6 +13,9 @@ public class TestScenario {
   private String scenarioDescription;
   private String request;
   private String expectedResponse;
+  private String url;
+  private String method;
   private String incomingResponse;
+  private String incomingStatus;
   private boolean completed;
 }

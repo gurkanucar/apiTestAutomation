@@ -13,10 +13,12 @@ public class DragAndDropHandler {
   private final VBox dropZone;
   private final FileProcessor fileProcessor;
   private final HelloController controller;
+  private final RequestSenderUtil requestSenderUtil;
 
   public DragAndDropHandler(VBox dropZone, HelloController controller) {
     this.dropZone = dropZone;
-    this.fileProcessor = new FileProcessor();
+    this.requestSenderUtil = new RequestSenderUtil();
+    this.fileProcessor = new FileProcessor(requestSenderUtil);
     this.controller = controller;
     setupDragAndDrop();
   }

@@ -8,6 +8,7 @@ module com.gucardev.apitestautomation {
 
     requires org.slf4j;
     requires org.apache.poi.ooxml;
+    requires java.net.http;
 
     opens com.gucardev.apitestautomation to javafx.fxml;
     exports com.gucardev.apitestautomation;
