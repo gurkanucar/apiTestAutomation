@@ -1,7 +1,6 @@
 package com.gucardev.apitestautomation.service;
 
 import com.gucardev.apitestautomation.model.TestScenario;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,6 +50,7 @@ public class ExcelFileReader {
                 scenarioDescription,
                 request,
                 expectedResponse,
+                "",
                 false);
         testScenarios.add(testScenario);
       }

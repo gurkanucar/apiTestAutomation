@@ -3,11 +3,13 @@ package com.gucardev.apitestautomation.service;
 import com.gucardev.apitestautomation.model.TestScenario;
 import java.util.List;
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class TestScenarioListViewManager {
 
@@ -58,18 +60,49 @@ public class TestScenarioListViewManager {
   private void showDetailsDialog(TestScenario scenario) {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setTitle("Test Scenario Details");
-    alert.setHeaderText(scenario.getScenarioName());
-    String content =
-        "Description: "
-            + scenario.getScenarioDescription()
-            + "\nRequest: "
-            + scenario.getRequest()
-            + "\nExpected Response: "
-            + scenario.getExpectedResponse()
-            + "\nCompleted: "
-            + (scenario.isCompleted() ? "Yes" : "No");
-    alert.setContentText(content);
+    alert.setHeaderText(null);
+
+    GridPane grid = new GridPane();
+    grid.setVgap(10);
+    grid.setHgap(10);
+
+    // Scenario Name
+    Label nameLabel = new Label("Name: ");
+    nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+    Label nameValue = new Label(scenario.getScenarioName());
+    nameValue.setWrapText(true);
+
+    // Scenario Description
+    Label descriptionLabel = new Label("Description: ");
+    descriptionLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+    Label descriptionValue = new Label(scenario.getScenarioDescription());
+    descriptionValue.setWrapText(true);
+
+    // Text Areas for Request, Response, and Incoming Response
+    TextArea requestArea = createTextArea("Request: ", scenario.getRequest());
+    TextArea responseArea = createTextArea("Expected Response: ", scenario.getExpectedResponse());
+    TextArea incomingResponseArea =
+        createTextArea(
+            "Incoming Response: ", scenario.getIncomingResponse()); // Assuming you have this field
+
+    // Adding to grid
+    grid.add(nameLabel, 0, 0);
+    grid.add(nameValue, 1, 0);
+    grid.add(descriptionLabel, 0, 1);
+    grid.add(descriptionValue, 1, 1);
+    grid.add(new HBox(10, requestArea, responseArea), 0, 2, 2, 1);
+    grid.add(incomingResponseArea, 0, 3, 2, 1);
+
+    alert.getDialogPane().setContent(grid);
     alert.showAndWait();
+  }
+
+  private TextArea createTextArea(String label, String content) {
+    TextArea textArea = new TextArea(content);
+    textArea.setEditable(false);
+    textArea.setWrapText(true);
+    textArea.setPrefSize(200, 100); // Adjust size as needed
+    return textArea;
   }
 
   public void addTestScenarios(List<TestScenario> scenarios) {
