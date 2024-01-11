@@ -1,7 +1,7 @@
 package com.gucardev.apitestautomation.service;
 
 import com.gucardev.apitestautomation.DialogUtil;
-import com.gucardev.apitestautomation.HelloController;
+import com.gucardev.apitestautomation.ApiTestController;
 import com.gucardev.apitestautomation.model.TestScenario;
 import java.util.List;
 import javafx.scene.input.DragEvent;
@@ -12,10 +12,10 @@ public class DragAndDropHandler {
 
   private final VBox dropZone;
   private final FileProcessor fileProcessor;
-  private final HelloController controller;
+  private final ApiTestController controller;
   private final RequestSenderUtil requestSenderUtil;
 
-  public DragAndDropHandler(VBox dropZone, HelloController controller) {
+  public DragAndDropHandler(VBox dropZone, ApiTestController controller) {
     this.dropZone = dropZone;
     this.requestSenderUtil = new RequestSenderUtil();
     this.fileProcessor = new FileProcessor(requestSenderUtil);

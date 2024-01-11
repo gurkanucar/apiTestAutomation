@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:id="mainVBox"
-      fx:controller="com.gucardev.apitestautomation.HelloController">
+      fx:controller="com.gucardev.apitestautomation.ApiTestController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>

@@ -16,7 +16,7 @@ import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class HelloController {
+public class ApiTestController {
 
   @FXML private VBox mainVBox;
   @FXML private ListView<TestScenario> testScenarioListView;
