@@ -42,16 +42,16 @@ public class TestScenarioListViewManager {
 
                   // Style with margin and bottom border as separator
                   setStyle(
-                      "-fx-font-size: 15px;" +
-                              "-fx-background-color: "
+                      "-fx-font-size: 15px;"
+                          + "-fx-background-color: "
                           + (item.isCompleted()
                               ? (item.isSuccess() ? "lightgreen" : "salmon")
                               : "#6fb7ff")
                           + "; -fx-text-fill: #3f3f3f;"
                           + "-fx-padding: 10;" // Margin around the text
                           + "-fx-border-color: transparent transparent grey transparent;" // Border
-                                                                                          // color
-                                                                                          // (separator)
+                          // color
+                          // (separator)
                           + "-fx-border-width: 0 0 1 0;" // Border width (only bottom border)
                       );
                 }
@@ -110,6 +110,12 @@ public class TestScenarioListViewManager {
     Label urlValue = new Label(scenario.getUrl());
     urlValue.setWrapText(true);
 
+    // Url Description
+    Label checkedFieldLabel = new Label("Checked Field: ");
+    checkedFieldLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+    Label checkedFieldValue = new Label(scenario.getCheckOnlyField());
+    checkedFieldValue.setWrapText(true);
+
     // Text Areas for Request, Response, and Incoming Response
     Node requestArea = createTextArea("Request: ", scenario.getRequest());
     Node responseArea = createTextArea("Expected Response: ", scenario.getExpectedResponse());
@@ -128,9 +134,11 @@ public class TestScenarioListViewManager {
     grid.add(methodValue, 1, 3);
     grid.add(urlLabel, 0, 4);
     grid.add(urlValue, 1, 4);
+    grid.add(checkedFieldLabel, 0, 5);
+    grid.add(checkedFieldValue, 1, 5);
 
-    grid.add(new HBox(10, requestArea, responseArea), 0, 5, 2, 1);
-    grid.add(incomingResponseArea, 0, 6, 2, 1);
+    grid.add(new HBox(10, requestArea, responseArea), 0, 6, 2, 1);
+    grid.add(incomingResponseArea, 0, 7, 2, 1);
 
     alert.getDialogPane().setContent(grid);
     alert.showAndWait();

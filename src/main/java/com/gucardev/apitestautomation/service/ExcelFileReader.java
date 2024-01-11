@@ -16,6 +16,7 @@ public class ExcelFileReader {
   private static final String REQUEST_COLUMN = "request";
   private static final String URL = "url";
   private static final String METHOD = "method";
+  private static final String CHECK_FIELD = "checkOnlyField";
 
   public List<TestScenario> readExcelFile(String filePath) {
     List<TestScenario> testScenarios = new ArrayList<>();
@@ -30,13 +31,15 @@ public class ExcelFileReader {
       int requestColIdx = findColumnIndex(headerRow, REQUEST_COLUMN);
       int urlColIdx = findColumnIndex(headerRow, URL);
       int methodColIdx = findColumnIndex(headerRow, METHOD);
+      int checkColIdx = findColumnIndex(headerRow, CHECK_FIELD);
 
       if (scenarioNameColIdx == -1
           || scenarioDescriptionColIdx == -1
           || expectedResponseColIdx == -1
           || requestColIdx == -1
           || urlColIdx == -1
-          || methodColIdx == -1) {
+          || methodColIdx == -1
+          || checkColIdx == -1) {
         throw new IllegalArgumentException("Required columns not found in the sheet");
       }
 
@@ -49,6 +52,7 @@ public class ExcelFileReader {
         String request = getCellValue(row, requestColIdx);
         String url = getCellValue(row, urlColIdx);
         String method = getCellValue(row, methodColIdx);
+        String checkOnlyField = getCellValue(row, checkColIdx);
 
         TestScenario testScenario =
             new TestScenario(
@@ -61,9 +65,10 @@ public class ExcelFileReader {
                 method,
                 "response",
                 "status",
+                checkOnlyField,
                 false, // success = false
-                false  // completed = false
-            );
+                false // completed = false
+                );
         testScenarios.add(testScenario);
       }
     } catch (IOException e) {
@@ -84,6 +89,10 @@ public class ExcelFileReader {
 
   private String getCellValue(Row row, int columnIndex) {
     Cell cell = row.getCell(columnIndex);
-    return cell != null ? cell.getStringCellValue() : "";
+    if (cell == null) {
+      return "";
+    }
+    DataFormatter formatter = new DataFormatter();
+    return formatter.formatCellValue(cell);
   }
 }

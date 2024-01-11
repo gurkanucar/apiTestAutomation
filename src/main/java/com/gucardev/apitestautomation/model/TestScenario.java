@@ -11,6 +11,8 @@ public class TestScenario {
   private String method;
   private String incomingResponse;
   private String incomingStatus;
+  private String checkOnlyField;
+
   private boolean success;
   private boolean completed;
 
@@ -24,6 +26,7 @@ public class TestScenario {
       String method,
       String incomingResponse,
       String incomingStatus,
+      String checkOnlyField,
       boolean success,
       boolean completed) {
     this.id = id;
@@ -35,8 +38,17 @@ public class TestScenario {
     this.method = method;
     this.incomingResponse = incomingResponse;
     this.incomingStatus = incomingStatus;
+    this.checkOnlyField = checkOnlyField;
     this.success = success;
     this.completed = completed;
+  }
+
+  public String getCheckOnlyField() {
+    return checkOnlyField;
+  }
+
+  public void setCheckOnlyField(String checkOnlyField) {
+    this.checkOnlyField = checkOnlyField;
   }
 
   public int getId() {
