@@ -27,7 +27,8 @@ public class RequestSenderUtil {
 
     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-    if (response.body().equals(scenario.getExpectedResponse())) {
+    if (JsonUtil.simplify(response.body())
+        .equals(JsonUtil.simplify(scenario.getExpectedResponse()))) {
       scenario.setSuccess(true);
     }
 
