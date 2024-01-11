@@ -29,8 +29,12 @@ public class RequestSenderUtil {
 
     if (scenario.getCheckOnlyField() != null && scenario.getCheckOnlyField().length() > 0) {
       String fieldToCheck = scenario.getCheckOnlyField();
-      String fieldValue = JsonUtil.extractField(response.body(), fieldToCheck);
-      scenario.setSuccess(fieldValue.equals(scenario.getExpectedResponse()));
+      try {
+        String fieldValue = JsonUtil.extractField(response.body(), fieldToCheck);
+        scenario.setSuccess(fieldValue.equals(scenario.getExpectedResponse()));
+      } catch (Exception ignored) {
+
+      }
     } else if (JsonUtil.simplify(response.body())
         .equals(JsonUtil.simplify(scenario.getExpectedResponse()))) {
       scenario.setSuccess(true);
