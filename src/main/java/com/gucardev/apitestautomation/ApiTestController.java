@@ -8,9 +8,12 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ApiTestController {
 
+  @FXML private ImageView logoImageView;
   @FXML private VBox mainVBox;
   @FXML private ListView<TestScenario> testScenarioListView;
   private DragAndDropHandler dragAndDropHandler;
@@ -27,6 +31,8 @@ public class ApiTestController {
   public void initialize() {
     listViewManager = new TestScenarioListViewManager(testScenarioListView);
     dragAndDropHandler = new DragAndDropHandler(mainVBox, this);
+    Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/img.png")));
+    logoImageView.setImage(image);
   }
 
   public void addTestScenarios(List<TestScenario> scenarios) {
